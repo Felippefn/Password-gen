@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Password generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/letterizejs@2.0.1/lib/letterize.min.js"></script>
+    <style>
+      :root {
+        scroll-behavior: smooth;
+      }
+      body {
+        overflow-x: hidden;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif, Helvetica, sans-serif;
+        color: azure;
+        background-color: #001220;
+      }
+      .content {
+        border-radius: 15px;
+        color: black;
+        padding-right: 70px;
+        background-color: aliceblue;
+      }
+      .sidebar {
+        border-radius: 15px;
+        background-color: aliceblue;
+        padding: 25px;
+        color: black;
+        max-width: 60%;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 10px;
+        cursor: pointer;
+        box-shadow: 1px 1px 1px #000000;
+        background: #50555c;
+        border-radius: 5px;
+        border: 1px solid #000000;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div style="display: none" class="alert alert-success" role="alert">
+      copied!
+    </div>
+    <div class="row text-center">
+      <h1>Password generator<span class="badge bg-secondary">New</span></h1>
+    </div>
+    <a class="aHome" href="/"
+      ><i style="color: white" class="material-icons">home</i></a
+    >
+    <!-- <div class="dropdown" data-bs-theme="dark">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonDark" data-bs-toggle="dropdown" aria-expanded="false">
+          Dark dropdown
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
+          <li><a class="dropdown-item active" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Separated link</a></li>
+        </ul>
+      </div> -->
+
+    <div style="margin-top: 10%" class="container px-4">
+      <div class="row gx-5 gy-4">
+        <div class="col-md-6 col-sm-6 col-xs-12 content">
+          <h4
+            id="password-box-gen"
+            style="width: 80%;
+            box-sizing: border-box;
+            word-wrap: break-word;
+              font-size: 1.2em;
+              padding: 10px;
+              margin-top: 5%;
+              border-radius: 5px;
+              box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+                rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            "
+          ></h4>
+          <i style="font-size: 25px" class="fa-solid fa-copy"></i>
+          <input
+            value="1"
+            name="length"
+            class="customRangeNumber"
+            step="1"
+            id="customRangeNumber1"
+            type="number"
+            min="0"
+            max="100"
+            onchange="updateTextInput(this.value);"
+          />
+
+          <label for="customRange1" class="form-label">Passowrd length</label>
+          <input
+            style="width: 80%"
+            type="range"
+            class="form-range"
+            min="5"
+            max="50"
+            onchange="updateTextInput(this.value);"
+            id="customRange1"
+          />
+        </div>
+
+        <div
+          class="col-md-4 col-sm-4 col-xs-12 sidebar offset-md-2 offset-sm-2 offset-lg-2"
+        >
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="uppercCheck"
+              checked
+            />
+            <label class="form-check-label" for="uppercCheck">
+              Uppercase
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="lowercCheck"
+              checked
+            />
+            <label class="form-check-label" for="lowercCheck">
+              Lowercase
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="numbersCheck"
+              checked
+            />
+            <label class="form-check-label" for="numbersCheck"> Numbers </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="symbolsCheck"
+              checked
+            />
+            <label class="form-check-label" for="symbolsCheck"> Symbols </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      style="
+        background-color: aliceblue;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 30%;
+      "
+      class="container"
+    >
+      <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+          <li class="nav-item">
+            <a href="/" class="nav-link px-2 text-muted">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="/news" class="nav-link px-2 text-muted">News</a>
+          </li>
+          <li class="nav-item">
+            <a href="/contact" class="nav-link px-2 text-muted">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a href="/about" class="nav-link px-2 text-muted">About</a>
+          </li>
+        </ul>
+        <p class="text-center text-muted">© 2023 Felippefn</p>
+      </footer>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      const symbols = ["!", "@", "#", "$", "%", "&", "?"];
+      const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+      alphabetUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+
+      // symbols_ = "!@#$%*?";
+      // number_ = "1234567890";
+      // alphabetUpper_ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      // alphabet_ = "abcdefghijklmnopqrstuvwxyz";
+
+      const checkboxU = document.getElementById("uppercCheck");
+      const checkboxL = document.getElementById("lowercCheck");
+      const checkboxN = document.getElementById("numbersCheck");
+      const checkboxS = document.getElementById("symbolsCheck");
+
+      function updateTextInput(val) {
+          finalPassword();
+          document.getElementById('customRange1').value=val; 
+          document.getElementById('customRangeNumber1').value=val; 
+          document.getElementById("password-box-gen").innerHTML = `${finalPassword()}`;
+        }
+      
+      function getInputValue(){
+        var inputRangeNumber2 = document.getElementById('customRangeNumber1').value;  
+        return inputRangeNumber2
+      }
+
+      var inputNumber = document.getElementById("customRangeNumber1");
+      var inputRangeNumber = document.getElementById('customRange1').value;
+      inputNumber.value = inputRangeNumber;
+
+      inputNumber.setAttribute('value', inputNumber.value);
+
+      function finalPassword(){
+        var password = createPassword(getInputValue());
+        return password
+      }
+
+      function removeException(checkbox, list_){
+        checkbox.addEventListener("change", (event) => {
+        if (event.currentTarget.checked) {
+          console.log("!!!!")
+        } else {
+          console.log("????")
+          for (i=0;i<list_.length;i++){
+            password = password.replace(list_[i], '');
+          }
+        }
+      });
+      }
+
+      function createPassword(length) {
+        let str = "";
+        let result = "";
+        const list_of_values = [];
+        let counter = 0;
+        for (i = 0; i < 50; i++) {
+          const randomSymbols = Math.floor(Math.random() * symbols.length);
+          const randomNumber = Math.floor(Math.random() * numbers.length);
+          const randomAlphabetUpper = Math.floor(
+            Math.random() * alphabetUpper.length
+          );
+          const randomAlphabet = Math.floor(Math.random() * alphabet.length);
+          list_of_values.push(
+            symbols[randomSymbols],
+            numbers[randomNumber],
+            alphabetUpper[randomAlphabetUpper],
+            alphabet[randomAlphabet]
+          );
+        }
+        while (counter < length) {
+          var randomIndex = Math.floor(Math.random() * list_of_values.length); 
+          var randomElement = list_of_values[randomIndex];
+
+          //str += (symbols[randomSymbols] + numbers[randomNumber] + alphabetUpper[randomAlphabetUpper] + alphabet[randomAlphabet]);
+          result += randomElement;
+          counter += 1;
+        }
+        return result;
+      }
+      document.getElementById("password-box-gen").innerHTML = `${finalPassword()}`;
+  
+    </script>
+  </body>
+</html>
