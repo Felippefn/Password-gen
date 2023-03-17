@@ -27,6 +27,7 @@
       :root {
         scroll-behavior: smooth;
       }
+
       body {
         overflow-x: hidden;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -34,13 +35,18 @@
           sans-serif, Helvetica, sans-serif;
         color: azure;
         background-color: #001220;
+        flex-direction: column;
+        display: flex;
+        min-height: 100vh;
       }
+
       .content {
         border-radius: 15px;
         color: black;
         padding-right: 70px;
         background-color: aliceblue;
       }
+
       .sidebar {
         border-radius: 15px;
         background-color: aliceblue;
@@ -62,37 +68,27 @@
   </head>
 
   <body>
-    <div style="display: none" class="alert alert-success" role="alert">
+    <div style="display: none" class="alert alert-success" role="alert" id="alertCopy">
       copied!
     </div>
+    <a class="aHome" href="/"
+      ><i style="margin-left: 15px; margin-top: 10px; color: white" class="material-icons"
+        >home</i
+      ></a
+    >
     <div class="row text-center">
       <h1>Password generator<span class="badge bg-secondary">New</span></h1>
     </div>
-    <a class="aHome" href="/"
-      ><i style="color: white" class="material-icons">home</i></a
-    >
-    <!-- <div class="dropdown" data-bs-theme="dark">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonDark" data-bs-toggle="dropdown" aria-expanded="false">
-          Dark dropdown
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
-          <li><a class="dropdown-item active" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Separated link</a></li>
-        </ul>
-      </div> -->
 
     <div style="margin-top: 10%" class="container px-4">
       <div class="row gx-5 gy-4">
         <div class="col-md-6 col-sm-6 col-xs-12 content">
           <h4
-            id="password-box-gen"
-            style="width: 80%;
-            box-sizing: border-box;
-            word-wrap: break-word;
+            id="passwordBoxGen"
+            style="
+              width: 80%;
+              box-sizing: border-box;
+              word-wrap: break-word;
               font-size: 1.2em;
               padding: 10px;
               margin-top: 5%;
@@ -101,7 +97,9 @@
                 rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
             "
           ></h4>
-          <i style="font-size: 25px" class="fa-solid fa-copy"></i>
+          <span style="cursor: pointer" id="copy-icon"
+            ><i style="font-size: 25px" class="fa-solid fa-copy"></i
+          ></span>
           <input
             value="1"
             name="length"
@@ -125,7 +123,7 @@
           />
         </div>
         <div
-          class="col-md-4 col-sm-4 col-xs-12 sidebar offset-md-2 offset-sm-2 offset-lg-2"
+          class="col-md-4 col-sm-4 col-xs-12 sidebar offset-md-2 offset-sm-2 offset-lg-2 "
         >
           <div class="form-check">
             <input
@@ -133,6 +131,7 @@
               type="checkbox"
               value=""
               id="uppercCheck"
+              onchange="updateTextInput(customRange1.value)"
               checked
             />
             <label class="form-check-label" for="uppercCheck">
@@ -145,6 +144,7 @@
               type="checkbox"
               value=""
               id="lowercCheck"
+              onchange="updateTextInput(customRange1.value)"
               checked
             />
             <label class="form-check-label" for="lowercCheck">
@@ -157,6 +157,7 @@
               type="checkbox"
               value=""
               id="numbersCheck"
+              onchange="updateTextInput(customRange1.value)"
               checked
             />
             <label class="form-check-label" for="numbersCheck"> Numbers </label>
@@ -167,6 +168,7 @@
               type="checkbox"
               value=""
               id="symbolsCheck"
+              onchange="updateTextInput(customRange1.value)"
               checked
             />
             <label class="form-check-label" for="symbolsCheck"> Symbols </label>
@@ -178,12 +180,13 @@
       style="
         background-color: aliceblue;
         width: 100%;
+        position: relative;
         max-width: 100%;
-        margin-top: 30%;
+        margin-top: auto;
       "
       class="container"
     >
-      <footer class="py-3 my-4">
+      <footer  class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
           <li class="nav-item">
             <a href="/" class="nav-link px-2 text-muted">Home</a>
@@ -214,8 +217,22 @@
     ></script>
 
     <script>
-      const symbols = ["!", "@", "#", "$", "%", "&", "?"];
-      const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+      const copyx = document.getElementById("copy-icon");
+
+      copyx.onclick = function () {
+        document.execCommand("copy");
+      };
+
+      copyx.addEventListener("copy", function (event) {
+        event.preventDefault();
+        if (event.clipboardData) {
+          event.clipboardData.setData("text/plain", passwordBoxGen.textContent);
+          document.getElementById("alertCopy").style.display = "flex";
+        }
+      });
+
+      symbols = "!@#$%&?".split("");
+      numbers = "1234567890".split("");
       alphabetUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
       alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
 
@@ -224,49 +241,43 @@
       // alphabetUpper_ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       // alphabet_ = "abcdefghijklmnopqrstuvwxyz";
 
-      const checkboxU = document.getElementById("uppercCheck");
-      const checkboxL = document.getElementById("lowercCheck");
-      const checkboxN = document.getElementById("numbersCheck");
-      const checkboxS = document.getElementById("symbolsCheck");
+      const check_upper = document.getElementById("uppercCheck");
+      const check_lower = document.getElementById("lowercCheck");
+      const check_numbers = document.getElementById("numbersCheck");
+      const check_symbol = document.getElementById("symbolsCheck");
 
       function updateTextInput(val) {
-          finalPassword();
-          document.getElementById('customRange1').value=val; 
-          document.getElementById('customRangeNumber1').value=val; 
-          document.getElementById("password-box-gen").innerHTML = `${finalPassword()}`;
-        }
-      
-      function getInputValue(){
-        var inputRangeNumber2 = document.getElementById('customRangeNumber1').value;  
-        return inputRangeNumber2
+        finalPassword();
+        document.getElementById("customRange1").value = val;
+        document.getElementById("customRangeNumber1").value = val;
+        document.getElementById(
+          "passwordBoxGen"
+        ).innerHTML = `${finalPassword()}`;
+      }
+
+      function getInputValue() {
+        var inputRangeNumber2 =
+          document.getElementById("customRangeNumber1").value;
+        return inputRangeNumber2;
       }
 
       var inputNumber = document.getElementById("customRangeNumber1");
-      var inputRangeNumber = document.getElementById('customRange1').value;
+      var inputRangeNumber = document.getElementById("customRange1").value;
       inputNumber.value = inputRangeNumber;
-      inputNumber.setAttribute('value', inputNumber.value);
+      inputNumber.setAttribute("value", inputNumber.value);
 
-      function finalPassword(){
-        let password = createPassword(getInputValue());
-        removeException(checkboxU, alphabetUpper);
-        removeException(checkboxL, alphabet);
-        removeException(checkboxN, numbers);
-        removeException(checkboxS, symbols);
-        return password
+      function finalPassword() {
+        var password = createPassword(
+          getInputValue(),
+          check_upper.checked,
+          check_lower.checked,
+          check_numbers.checked,
+          check_symbol.checked
+        );
+        return password;
       }
 
-      function removeException(checkbox, list_){
-        checkbox.addEventListener("change", (event) => {
-        if (checkbox.checked != true) {
-          console.log("????")
-          for (i=0;i<list_.length;i++){
-            finalPassword() = finalPassword().replace(list_[i], '');
-          }
-        }
-      });
-      }
-
-      function createPassword(length) {
+      function createPassword(length, upper, lower, numbers1, symbols1) {
         let str = "";
         let result = "";
         const list_of_values = [];
@@ -278,15 +289,13 @@
             Math.random() * alphabetUpper.length
           );
           const randomAlphabet = Math.floor(Math.random() * alphabet.length);
-          list_of_values.push(
-            symbols[randomSymbols],
-            numbers[randomNumber],
-            alphabetUpper[randomAlphabetUpper],
-            alphabet[randomAlphabet]
-          );
+          if (symbols1) list_of_values.push(symbols[randomSymbols]);
+          if (numbers1) list_of_values.push(numbers[randomNumber]);
+          if (upper) list_of_values.push(alphabetUpper[randomAlphabetUpper]);
+          if (lower) list_of_values.push(alphabet[randomAlphabet]);
         }
         while (counter < length) {
-          var randomIndex = Math.floor(Math.random() * list_of_values.length); 
+          var randomIndex = Math.floor(Math.random() * list_of_values.length);
           var randomElement = list_of_values[randomIndex];
 
           //str += (symbols[randomSymbols] + numbers[randomNumber] + alphabetUpper[randomAlphabetUpper] + alphabet[randomAlphabet]);
@@ -295,8 +304,9 @@
         }
         return result;
       }
-      document.getElementById("password-box-gen").innerHTML = `${finalPassword()}`;
-  
+      document.getElementById(
+        "passwordBoxGen"
+      ).innerHTML = `${finalPassword()}`;
     </script>
   </body>
 </html>
