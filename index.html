@@ -69,7 +69,7 @@
 
   <body>
     <div style="display: none; justify-content: center;" class="alert alert-success alert-dismissible" role="alert" id="alertCopy">
-      <strong>Copied!   <a onclick="alertCopy.style.display='none'" style="text-decoration: none; position: absolute; left: 95%; color: #146c43;" href="#" class="close" data-dismiss="alert">    X</a></strong>
+      <strong>Copied!   <a onclick="alertCopy.style.display='none'" style="text-decoration: none; position: absolute; left: 95%; color: #146c43;" href="" class="close" data-dismiss="alert">    X</a></strong>
     </div>
     <a class="aHome" href="/"
       ><i style="margin-left: 15px; margin-top: 10px; color: white" class="material-icons"
@@ -86,7 +86,7 @@
           <h4
             id="passwordBoxGen"
             style="
-              width: 80%;
+              width: 70%;
               box-sizing: border-box;
               word-wrap: break-word;
               font-size: 1.2em;
@@ -111,7 +111,8 @@
             max="100"
             onchange="updateTextInput(this.value);"
           />
-          <label for="customRange1" class="form-label">Passowrd length</label>
+          <label for="customRange1" class="form-label">Passowrd length |  </label>
+         <span style="cursor: pointer" id="refreshIcon" ><i style="font-size: 25px;" class="fa fa-refresh" aria-hidden="true"></i></span>
           <input
             style="width: 80%"
             type="range"
@@ -218,7 +219,7 @@
 
     <script>
       const copyx = document.getElementById("copy-icon");
-
+      const refresh = document.getElementById("refreshIcon")
       copyx.onclick = function () {
         document.execCommand("copy");
       };
@@ -274,6 +275,10 @@
           check_numbers.checked,
           check_symbol.checked
         );
+        console.log(password);
+        document.getElementById(
+          "passwordBoxGen"
+        ).innerHTML = `${password}`;
         return password;
       }
 
@@ -304,6 +309,10 @@
         }
         return result;
       }
+      refresh.onclick = function (){
+        finalPassword();
+      }
+
       document.getElementById(
         "passwordBoxGen"
       ).innerHTML = `${finalPassword()}`;
